@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Calculadora</title>
+</head>
+<body>
+    <input type="text" id="cliente" placeholder="Cliente">
+    <input type="text" id="produto" placeholder="Produto">
+    <input type="text" id="valor" placeholder="Valor">
+    <button onclick="adicionarConsumo()">Adicionar Consumo</button>
+    <br>
+    <button onclick="calcularTotal()">Calcular Total</button>
+    <button onclick="limpar()">Limpar</button>
+    <br>
+    <p id="resultado"></p>
+
+    <script>
+        var consumos = [];
+
+        function adicionarConsumo() {
+            var cliente = document.getElementById('cliente').value;
+            var produto = document.getElementById('produto').value;
+            var valor = parseFloat(document.getElementById('valor').value);
+
+            consumos.push({ cliente: cliente, produto: produto, valor: valor });
+            
+            document.getElementById('cliente').value = "";
+            document.getElementById('produto').value = "";
+            document.getElementById('valor').value = "";
+        }
+
+        function calcularTotal() {
+            var resultado = document.getElementById('resultado');
+            resultado.innerHTML = "";
+
+            var clientes = {};
+            var totalServico = 0;
+
+            for (var i = 0; i < consumos.length; i++) {
+                var consumo = consumos[i];
+                var cliente = consumo.cliente;
+                var valor = consumo.valor;
+                
+                if (!clientes[cliente]) {
+                    clientes[cliente] = 0;
+                }
+
+                clientes[cliente] += valor;
+
+                totalServico += (0.1 * valor);
+            }
+
+            for (var cliente in clientes) {
+                var total = clientes[cliente] + (0.1 * clientes[cliente]);
+
+                resultado.innerHTML += cliente + ": R$" + total.toFixed(2) + "<br>";
+            }
+
+            resultado.innerHTML += "Total do serviço (10%): R$" + totalServico.toFixed(2);
+        }
+
+        function limpar() {
+            consumos = [];
+            document.getElementById('cliente').value = "";
+            document.getElementById('produto').value = "";
+            document.getElementById('valor').value = "";
+            document.getElementById('resultado').innerHTML = "";
+        }
+    </script>
+</body>
+</html>
